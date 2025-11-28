@@ -26,8 +26,17 @@ const mergeConfigs = (defaultConfig, customConfig) => {
 
 // 5. Async/Await Pattern
 const fetchData = async (url) => {
+    if (!url || typeof url !== 'string') {
+        throw new Error('Invalid URL: URL must be a non-empty string');
+    }
+    
     try {
         const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
         const data = await response.json();
         return data;
     } catch (error) {
